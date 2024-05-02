@@ -1,0 +1,65 @@
+<main class="grid-container main">
+    <div class="jugador1"> 
+        <div class="container" *ngIf="this.manosRepartidas">
+            <div *ngIf="this.manos[0].cartas[0].imagenUrl" class="carta carta1"><img src="../../assets/cartas/back.png"  alt=""></div>
+            <div *ngIf="this.manos[0].cartas[1].imagenUrl" class="carta carta2"><img src="../../assets/cartas/back.png"  alt=""></div>
+            <div *ngIf="this.manos[0].cartas[2].imagenUrl" class="carta carta3"><img src="../../assets/cartas/back.png"  alt=""></div>
+        </div>
+    </div>
+    <div class="jugador2">
+        <div class="container" *ngIf="this.manosRepartidas">
+            <div *ngIf="this.manos[1].cartas[0].imagenUrl" class="carta carta1"><img src="../../assets/cartas/back.png"  alt=""></div>
+            <div *ngIf="this.manos[1].cartas[1].imagenUrl" class="carta carta2"><img src="../../assets/cartas/back.png"  alt=""></div>
+            <div *ngIf="this.manos[1].cartas[2].imagenUrl" class="carta carta3"><img src="../../assets/cartas/back.png"  alt=""></div>
+        </div>
+    </div>
+    <div *ngIf="this.manosRepartidas" class="caja3">
+        <h4>Jugador 3</h4>
+    </div>
+    <div class="jugador3">
+        <div class="container" *ngIf="this.manosRepartidas">
+            <div *ngIf="this.manos[2].cartas[0].imagenUrl" [style.pointerEvents]="pointerEventsValue" id="carataj1" class="carta carta1" (click)="jugarCarta(1)"><img src="{{ this.manos[2].cartas[0].imagenUrl }}"></div>
+            <div *ngIf="this.manos[2].cartas[1].imagenUrl" [style.pointerEvents]="pointerEventsValue" id="carataj2" class="carta carta2" (click)="jugarCarta(2)"><img src="{{ this.manos[2].cartas[1].imagenUrl }}"></div>
+            <div *ngIf="this.manos[2].cartas[2].imagenUrl" [style.pointerEvents]="pointerEventsValue" id="carataj3" class="carta carta3" (click)="jugarCarta(3)"><img src="{{ this.manos[2].cartas[2].imagenUrl }}"></div>
+        </div>
+    </div>
+    <div class="jugador4"> 
+        <div class="container" *ngIf="this.manosRepartidas">
+            <div *ngIf="this.manos[3].cartas[0].imagenUrl" class="carta carta1"><img src="../../assets/cartas/back.png"  alt=""></div>
+            <div *ngIf="this.manos[3].cartas[1].imagenUrl" class="carta carta2"><img src="../../assets/cartas/back.png"  alt=""></div>
+            <div *ngIf="this.manos[3].cartas[2].imagenUrl" class="carta carta3"><img src="../../assets/cartas/back.png"  alt=""></div>  
+        </div>
+    </div>
+    <div class="caja caja1">
+        caja1
+    </div>
+    <div class="caja caja2">
+        caja2
+    </div>
+    <div class="caja caja3">
+        <h4>Nombre Jugador</h4>
+        <button class="btnEmpezar" *ngIf="this.manosRepartidas" >Reiniciar partida</button>
+        <button class="btnEmpezar" *ngIf="!this.manosRepartidas" (click)="empezarPartida()">Empezar partida</button>
+    </div>
+    <div class="caja caja4">
+        caja4
+    </div>
+    <div class="tablero"> 
+        
+        <div class="container">
+            <div [style.zIndex]="zValue1" class="carta cartaJugada1" *ngIf="this.tablero[0]"><img src="{{this.tablero[0].imagenUrl}}"  alt="1"></div> 
+                <div [style.zIndex]="zValue2" class="carta cartaJugada2" *ngIf="this.tablero[1]"><img src="{{this.tablero[1].imagenUrl}}"  alt=""></div> 
+                <div [style.zIndex]="zValue3" class="carta cartaJugada3" *ngIf="this.tablero[2]"><img src="{{this.tablero[2].imagenUrl}}"  alt=""></div> 
+                <div [style.zIndex]="zValue4" class="carta cartaJugada4" *ngIf="this.tablero[3]"><img src="{{this.tablero[3].imagenUrl}}"  alt=""></div> 
+            </div>
+        </div>
+    <div class="puntuacion"> 
+        <h3 class="log" *ngIf="!this.manosRepartidas">{{logg}}</h3>
+    </div>
+    <div class="mesaPinta">
+        <div  *ngIf="this.manosRepartidas && this.cartasEnLaBaraja >= 1" class="carta cartaPinta"><img src="{{ this.pinta.imagenUrl }}"></div>
+        <div  *ngIf="this.manosRepartidas && this.cartasEnLaBaraja >= 2" class="carta baraja"><img src="../../assets/cartas/back.png"></div> 
+        <div  *ngIf="this.manosRepartidas && this.cartasEnLaBaraja >= 1"><h3 class="log">{{this.cartasEnLaBaraja}}</h3></div>
+    </div>
+    
+</main>    

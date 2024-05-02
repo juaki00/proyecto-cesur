@@ -1,0 +1,192 @@
+*{
+  min-height: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(53, 104, 45);
+}
+
+.main{
+  font-family: "Public Sans", sans-serif;
+  font-size: 1.2rem;
+  min-height: 99vh;
+}
+
+.grid-container > * {
+  padding: 1px;
+  text-align: center;
+}
+
+.jugador1{
+  grid-area: jugador1;
+}
+
+.jugador2{
+  grid-area: jugador2;
+  transform: rotate(270deg);
+}
+
+.jugador3{
+  grid-area: jugador3;
+}
+
+.jugador4{
+  grid-area: jugador4;
+  transform: rotate(90deg);
+}
+
+.caja1{
+  grid-area: caja1;
+  z-index: 35;
+}
+
+.caja2{
+  grid-area: caja2;
+  z-index: 35;
+}
+
+.caja3{
+  grid-area: caja3;
+  z-index: 35;
+}
+
+.caja4{
+  grid-area: caja4;
+  z-index: 35;
+}
+
+.tablero{
+  grid-area: tablero;
+}
+
+.mesaPinta{
+  grid-area: mesaPinta;
+}
+
+.puntuacion{
+  display: flex;
+  align-items: flex-start;
+  z-index: 300;
+  grid-area: puntuacion;
+}
+
+.grid-container {
+  display: grid;
+  gap: 0px;
+  grid-template:
+  "jugador1       jugador1    jugador1"    120px
+  "jugador2       tablero     jugador4"    auto
+  ".              jugador3    ."           120px 
+  "puntuacion     puntuacion  puntuacion"  170px/
+   120px          auto        120px ;
+}
+
+.container{
+  display: flex;
+  justify-content: center;
+  flex-flow: row no-wrap;
+  padding: 0;
+  margin: 0;
+  height: 100px;
+  border-radius: 15px;
+}
+
+.carta{
+  flex:1;
+  background-color: hsl(0, 0%, 100%);
+  max-height: 120px;
+  min-height: 120px;
+  max-width: 80px;
+  min-width: 80px;
+  box-shadow: 0px 0px 0px 1px;
+  padding: 6px 6px;
+  border-radius: 10px;
+}
+
+.carta img{
+  max-height: 10px;
+}
+
+.carta1, .carta2, .carta3{
+  margin: 0;
+  height: 50px;
+}
+
+.cartaJugada3{
+  position: relative; /* Posicionamiento absoluto dentro del contenedor */
+  top: 30%; /* Posiciona verticalmente al 50% */
+  left: -5%; /* Posiciona horizontalmente al 50% */
+  //transform: translate(-50%, -50%);
+}
+
+.cartaJugada2{
+  position: relative; 
+  top: 10%; 
+  //left: 00px; /* Posiciona horizontalmente al 50% */
+  transform: rotate(90deg);
+}
+  
+.cartaJugada1{
+  position: relative; /* Posicionamiento absoluto dentro del contenedor */
+  top: -20%; /* Posiciona verticalmente al 50% */
+  left: 20%; /* Posiciona horizontalmente al 50% */
+  //transform: translate(50%, 50%);
+  transform: rotateZ(180deg);
+} 
+
+.cartaJugada4{
+  position: relative;
+  top: 12%;
+  left: -10%;
+  transform: rotateZ(270deg);
+}
+
+.cartaPinta{
+  height: 8px;
+  position: relative; 
+  transform: rotateZ(90deg) translate(0px, -50px);
+}
+
+.baraja{
+  height: 8px;
+  position: relative;
+  transform:translate(50px, -80px);
+}
+
+.caja{
+  //display: flex;
+}
+
+.caja *{
+  min-height: 50px;
+  max-height: 50px;
+}
+
+button.btnEmpezar{
+  padding: 15px;
+  margin: auto;
+  min-height: 60px;
+  max-height: 60px;
+  background-color: green;
+}
+
+@media (min-width: 600px){
+  .grid-container {
+    grid-template:
+    "jugador1      jugador1 jugador1"    120px
+    "jugador2      tablero  jugador4"    auto
+    ".      jugador3 puntuacion"    120px /
+    170px        auto     170px ;
+  }
+}
+
+@media (min-width: 900px){
+  .grid-container {
+    grid-template:
+    ".          .           jugador1    caja1       .             ."            200px
+    "caja2      jugador2    mesaPinta   tablero     jugador4      caja4   "     auto
+    ".          .           caja3       jugador3    puntuacion    puntuacion"   400px /
+    150px       250px       200px       auto        250px         150px ;
+  }
+
+}

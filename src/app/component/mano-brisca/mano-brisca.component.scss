@@ -1,0 +1,26 @@
+.mano{
+    display: flex;
+}
+
+.carta{
+    background-color: white;
+    size: 50%;
+    box-shadow: 0px 0px 1px 1px;
+    padding: 9px 11px;
+    border-radius: 6px;
+    margin-right: -25px;
+    margin-left: -25px;
+    
+}
+
+#carta1{
+    z-index: 5;
+}
+
+#carta2{
+    z-index: 10;
+}
+
+#carta3{
+    z-index: 15;
+}
