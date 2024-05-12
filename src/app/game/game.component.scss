@@ -9,7 +9,9 @@
 .main{
   font-family: "Public Sans", sans-serif;
   font-size: 1.2rem;
-  min-height: 99vh;
+  min-height: 100vh;
+  max-height: 100vh;
+  padding: 25px;
 }
 
 .grid-container > * {
@@ -23,7 +25,8 @@
 
 .jugador2{
   grid-area: jugador2;
-  transform: rotate(270deg);
+  transform: rotate(270deg) translate(0px, 80px);
+  transform-origin: 50% 50%;
 }
 
 .jugador3{
@@ -32,30 +35,12 @@
 
 .jugador4{
   grid-area: jugador4;
-  transform: rotate(90deg);
-}
-
-.caja1{
-  grid-area: caja1;
-  z-index: 35;
-}
-
-.caja2{
-  grid-area: caja2;
-  z-index: 35;
-}
-
-.caja3{
-  grid-area: caja3;
-  z-index: 35;
-}
-
-.caja4{
-  grid-area: caja4;
-  z-index: 35;
+  transform: rotate(90deg) translate(0px, 80px);
+  transform-origin: 50% 50%;
 }
 
 .tablero{
+  position: relative;
   grid-area: tablero;
 }
 
@@ -63,14 +48,19 @@
   grid-area: mesaPinta;
 }
 
+.cartasEnBaraja{
+  min-height: 20px;
+  max-height: 20px;
+  top: 20;
+}
+
 .puntuacion{
-  display: flex;
-  align-items: flex-start;
-  z-index: 300;
+  z-index: 30000;
   grid-area: puntuacion;
 }
 
 .grid-container {
+  height: 100%;
   display: grid;
   gap: 0px;
   grid-template:
@@ -92,59 +82,56 @@
 }
 
 .carta{
-  flex:1;
   background-color: hsl(0, 0%, 100%);
-  max-height: 120px;
-  min-height: 120px;
-  max-width: 80px;
-  min-width: 80px;
-  box-shadow: 0px 0px 0px 1px;
-  padding: 6px 6px;
+  max-height: 96px;
+  min-height: 96px;
+  max-width: 63px;
+  min-width: 63px;
+  box-shadow: 0px 0px 2px 1px;
+  padding: 5px 5px;
   border-radius: 10px;
 }
 
 .carta img{
-  max-height: 10px;
+  max-height: 86px;
 }
 
 .carta1, .carta2, .carta3{
   margin: 0;
-  height: 50px;
+  height: 80px;
 }
 
 .cartaJugada3{
-  position: relative; /* Posicionamiento absoluto dentro del contenedor */
-  top: 30%; /* Posiciona verticalmente al 50% */
-  left: -5%; /* Posiciona horizontalmente al 50% */
-  //transform: translate(-50%, -50%);
+  position: absolute; 
+  bottom: 20px; 
+  left: 40%; 
 }
 
 .cartaJugada2{
-  position: relative; 
-  top: 10%; 
-  //left: 00px; /* Posiciona horizontalmente al 50% */
+  position: absolute; 
+  left: 21px;
+  top: 30%;
   transform: rotate(90deg); 
 }
   
 .cartaJugada1{
-  position: relative; /* Posicionamiento absoluto dentro del contenedor */
-  top: -20%; /* Posiciona verticalmente al 50% */
-  left: 20%; /* Posiciona horizontalmente al 50% */
-  //transform: translate(50%, 50%);
+  position: absolute; 
+  top: -20px; 
+  left: 30%; 
   transform: rotateZ(180deg);
 } 
 
 .cartaJugada4{
-  position: relative;
-  top: 12%;
-  left: -10%;
+  position: absolute;
+  top: 40%;
+  right: -20px;
   transform: rotateZ(270deg);
 }
 
 .cartaPinta{
   height: 8px;
   position: relative; 
-  transform: rotateZ(90deg) translate(0px, -50px);
+  transform: rotateZ(90deg) translate(-40px, -50px);
 }
 
 .baraja{
@@ -153,13 +140,36 @@
   transform:translate(50px, -80px);
 }
 
-.caja{
-  //display: flex;
+.infoJugador{
+  grid-area: infoJugador;
+  z-index: 35;
+  max-width: 400px;
+  margin-bottom: 8px;
 }
 
-.caja *{
-  min-height: 50px;
-  max-height: 50px;
+.infoJugador{
+  background-color: rgb(70, 123, 61);
+}
+
+.infoJugador .cajaTitulo{
+  padding: 5px;
+  min-height: 90px;
+  max-height: 90px;
+}
+
+.infoJugador .cajaTitulo img{
+  border-radius: 20px;
+}
+
+.infoJugador .cajaBody{
+  min-height: 79px;
+  max-height: 79px;
+}
+
+.infoJugador .cajaBody .btnEmpezar{
+  margin-top: 30px;
+  min-height: 30px;
+  max-height: 30px;
 }
 
 button.btnEmpezar{
@@ -180,13 +190,14 @@ button.btnEmpezar{
   }
 }
 
-@media (min-width: 900px){
+@media (min-width: 927px){
+  
   .grid-container {
     grid-template:
-    ".          .           jugador1    caja1       .             ."            200px
-    "caja2      jugador2    mesaPinta   tablero     jugador4      caja4   "     auto
-    ".          .           caja3       jugador3    puntuacion    puntuacion"   400px /
-    150px       250px       200px       auto        250px         150px ;
+    ".    infoJugador .              jugador1    .            ."     150px
+    ".    jugador2    mesaPinta      tablero     jugador4     ."     300px
+    ".    .           .              jugador3    puntuacion   ."     150px /
+    auto  200px        200px          300px        200px      auto;
   }
 
 }

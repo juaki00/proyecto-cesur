@@ -10,7 +10,7 @@ import { BriscaService } from '../services/brisca.service';
 })
 export class GameComponent implements OnInit {
 
-  VELOCIDAD_PARTIDA = 2;
+  VELOCIDAD_PARTIDA = 22;
 
   pointerEventsValue = 'none';
   manosRepartidas = false;
@@ -20,7 +20,7 @@ export class GameComponent implements OnInit {
 
   cartasJugadas = 0;
   cartasEnLaBaraja = 40;
-  turno = 2;
+  turno = 1;
   zValue1 = 0;
   zValue2 = 0;
   zValue3 = 0;
@@ -35,7 +35,7 @@ export class GameComponent implements OnInit {
   jugadorGanador = 0;
   pinta:Carta;
 
-  logg = "";
+  logg = "puntuacion";
   esRondaFinal = this.barajaService.estaVacio();
 
   constructor(private barajaService:BarajaService, private bricaService:BriscaService) {
@@ -68,9 +68,9 @@ export class GameComponent implements OnInit {
     this.jugadorGanador = 0;
   }
 
-  empezarPartida(){
+  async empezarPartida(){
+
     this.iniciarVariables();
-    this.barajaService.reiniciarBaraja();
     this.manos = new Array(3);
     for (let i = 0; i < 4; i++) {
       let carta1 = this.barajaService.cogerPrimeraCarta();
@@ -79,12 +79,16 @@ export class GameComponent implements OnInit {
       this.manos[i] = new ManoBrisca(carta1, carta2, carta3);
     }
     this.manosRepartidas = true;
-    this.jugarRonda();
+    (async () => {
+      await this.pauseForOneSecondAsync();
+      this.jugarRonda();
+    })(); 
   }
 
   async jugarRonda(){
     this.cartasEnLaBaraja = this.barajaService.baraja.cartas.length;
       //elegir si juega IA o el jugador
+      
       if(this.turno==3){
         if(this.cartasJugadas>=4){
           this.resolver();
@@ -92,7 +96,6 @@ export class GameComponent implements OnInit {
         else{
           this.juegaJugador();
         }
-        
       }
       else{
         //esperar 2 segundos
@@ -128,12 +131,16 @@ export class GameComponent implements OnInit {
   }
 
   juegaIA(){
-    const randomNumber = Math.floor(Math.random() * 3);
+    let vamosGanando: boolean  = ((this.jugadorGanador == 1 || this.jugadorGanador == 3) 
+                               && (this.turno == 1 || this.turno == 3))
+                              || ((this.jugadorGanador == 2 || this.jugadorGanador == 4)
+                               && (this.turno == 2 || this.turno == 4));
+    const cartaDecidida = this.bricaService.decidirJugada(this.manos[this.turno-1].cartas,this.tablero, this.cartaGanadora, this.pinta.palo, vamosGanando);
 
     let cartaJugada:Carta;
     if(this.cartasJugadas<4){
-      cartaJugada = {...this.manos[this.turno-1].cartas[randomNumber]};
-      this.manos[this.turno-1].cartas[randomNumber]=this.barajaService.cogerPrimeraCarta();
+      cartaJugada = {...this.manos[this.turno-1].cartas[cartaDecidida]};
+      this.manos[this.turno-1].cartas[cartaDecidida]=this.barajaService.cogerPrimeraCarta();
       this.tablero[this.turno-1] = cartaJugada;
 
       switch(this.turno){
@@ -158,7 +165,7 @@ export class GameComponent implements OnInit {
     this.pointerEventsValue = 'auto';
   }
 
-  jugarCarta(numeroCarta:number){
+  async jugarCarta(numeroCarta:number){
     let cartaJugada:Carta;
     if(numeroCarta==1){
       
@@ -188,7 +195,11 @@ export class GameComponent implements OnInit {
     this.pointerEventsValue = 'none';
     this.zValue3=this.cartasJugadas*100;
     if(this.cartasJugadas>=3){
-      this.resolver();
+      (async () => {
+        await this.pauseForOneSecondAsync();
+        this.resolver();
+      })();
+      
     }
     else{
       (async () => {
@@ -272,14 +283,18 @@ export class GameComponent implements OnInit {
   }
 
   juegaIAFinal() {
-    console.log("juegaIAFinal, ");
+    let vamosGanando: boolean  = ((this.jugadorGanador == 1 || this.jugadorGanador == 3) 
+                               && (this.turno == 1 || this.turno == 3))
+                              || ((this.jugadorGanador == 2 || this.jugadorGanador == 4)
+                               && (this.turno == 2 || this.turno == 4));
+    const cartaDecidida = this.bricaService.decidirJugada(this.manos[this.turno-1].cartas,this.tablero, this.cartaGanadora, this.pinta.palo, vamosGanando);
+
     const numeroCartasEnMano = this.barajaService.cartasEnMano(this.manos[this.turno-1].cartas);
-    const randomNumber = Math.floor(Math.random() * numeroCartasEnMano);
     this.quitarCartaVacia(this.turno-1);
     let cartaJugada:Carta;
     if(this.cartasJugadas<4){
-      cartaJugada = {...this.manos[this.turno-1].cartas[randomNumber]};
-      this.manos[this.turno-1].cartas[randomNumber]=this.barajaService.cogerPrimeraCarta();
+      cartaJugada = {...this.manos[this.turno-1].cartas[cartaDecidida]};
+      this.manos[this.turno-1].cartas[cartaDecidida]=this.barajaService.cogerPrimeraCarta();
       this.tablero[this.turno-1] = cartaJugada;
 
       switch(this.turno){

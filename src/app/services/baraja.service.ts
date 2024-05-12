@@ -44,11 +44,12 @@ export class BarajaService {
 
   cogerPrimeraCarta(): Carta{
     let primeraCarta: Carta | undefined = this.baraja.cartas.pop();
-    if(primeraCarta){
-      return primeraCarta;
-    }
-    else{}
-      return new Carta(0,0,"");
+      if(primeraCarta){
+        return primeraCarta;
+      }
+      else{
+        return new Carta(0,0,"");
+      }
     }
 
   estaVacio():boolean{

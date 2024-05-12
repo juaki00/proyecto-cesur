@@ -12,6 +12,8 @@ import { CartaNombrePipe } from './pipes/carta-nombre.pipe';
 import { CartaComponent } from './component/carta/carta.component';
 import { ManoBriscaComponent } from './component/mano-brisca/mano-brisca.component';
 import { BriscaService } from './services/brisca.service';
+import {MatCardModule} from '@angular/material/card';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -22,10 +24,13 @@ import { BriscaService } from './services/brisca.service';
     CartaNombrePipe,
     CartaComponent,
     ManoBriscaComponent
+    
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatCardModule,
+    BrowserAnimationsModule
   ],
   providers: [AppComponent,BarajaService, BriscaService, Baraja],
   bootstrap: [AppComponent]
