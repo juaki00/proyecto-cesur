@@ -1,9 +1,10 @@
-<main class="grid-container main">
+<main *ngIf="this.manosRepartidas" class="grid-container main">
     <div class="jugador1"> 
         <div class="container" *ngIf="this.manosRepartidas">
             <div *ngIf="this.manos[0].cartas[0].imagenUrl" class="carta carta1"><img src="{{this.manos[0].cartas[0].imagenUrl}}"  alt=""></div>
             <div *ngIf="this.manos[0].cartas[1].imagenUrl" class="carta carta2"><img src="{{this.manos[0].cartas[1].imagenUrl}}"  alt=""></div>
             <div *ngIf="this.manos[0].cartas[2].imagenUrl" class="carta carta3"><img src="{{this.manos[0].cartas[2].imagenUrl}}"  alt=""></div>
+            <h3 class="labelJugadorAmarillo">Jugador 1</h3>
         </div>
     </div>
     <div class="jugador2">
@@ -11,13 +12,16 @@
             <div *ngIf="this.manos[1].cartas[0].imagenUrl" class="carta carta1"><img src="{{this.manos[1].cartas[0].imagenUrl}}"  alt=""></div>
             <div *ngIf="this.manos[1].cartas[1].imagenUrl" class="carta carta2"><img src="{{this.manos[1].cartas[1].imagenUrl}}"  alt=""></div>
             <div *ngIf="this.manos[1].cartas[2].imagenUrl" class="carta carta3"><img src="{{this.manos[1].cartas[2].imagenUrl}}"  alt=""></div>
+            <h3 class="labelJugadorAzul">Jugador 2</h3>
         </div>
     </div>
     <div class="jugador3">
+        <app-avatar  *ngIf="this.manosRepartidas"></app-avatar>
         <div class="container" *ngIf="this.manosRepartidas">
             <div *ngIf="this.manos[2].cartas[0].imagenUrl" [style.pointerEvents]="pointerEventsValue" id="carataj1" class="carta carta1" (click)="jugarCarta(1)"><img src="{{ this.manos[2].cartas[0].imagenUrl }}"></div>
             <div *ngIf="this.manos[2].cartas[1].imagenUrl" [style.pointerEvents]="pointerEventsValue" id="carataj2" class="carta carta2" (click)="jugarCarta(2)"><img src="{{ this.manos[2].cartas[1].imagenUrl }}"></div>
             <div *ngIf="this.manos[2].cartas[2].imagenUrl" [style.pointerEvents]="pointerEventsValue" id="carataj3" class="carta carta3" (click)="jugarCarta(3)"><img src="{{ this.manos[2].cartas[2].imagenUrl }}"></div>
+            <h3 class="labelJugadorAmarillo">{{this.nombre | nombrePropio}}</h3>
         </div>
     </div>
     <div class="jugador4"> 
@@ -25,29 +29,36 @@
             <div *ngIf="this.manos[3].cartas[0].imagenUrl" class="carta carta1"><img src="{{this.manos[3].cartas[0].imagenUrl}}"  alt=""></div>
             <div *ngIf="this.manos[3].cartas[1].imagenUrl" class="carta carta2"><img src="{{this.manos[3].cartas[1].imagenUrl}}"  alt=""></div>
             <div *ngIf="this.manos[3].cartas[2].imagenUrl" class="carta carta3"><img src="{{this.manos[3].cartas[2].imagenUrl}}"  alt=""></div>  
+            <h3 class="labelJugadorAzul">Jugador 4</h3>
         </div>
     </div>
-    <mat-card class="infoJugador">
-        <mat-card-title-group class="cajaTitulo">
-          <mat-card-title>Nombre Jugador</mat-card-title>
-          <img mat-card-sm-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" >
-        </mat-card-title-group>
-        <mat-card-content class="cajaBody">
-            <button class="btnEmpezar" *ngIf="this.manosRepartidas" >Reiniciar partida</button>
-            <button class="btnEmpezar" *ngIf="!this.manosRepartidas" (click)="empezarPartida()">Empezar partida</button>
-        </mat-card-content>
-      </mat-card>
+    <div class="infoJugador">
+        <button class="btnSalir" (click)="salir()">Abandonar partida</button>
+    </div>
     <div class="tablero"> 
-        
         <div class="container">
             <div [style.zIndex]="zValue1" class="carta cartaJugada1" *ngIf="this.tablero[0]"><img src="{{this.tablero[0].imagenUrl}}"  alt="1"></div> 
-                <div [style.zIndex]="zValue2" class="carta cartaJugada2" *ngIf="this.tablero[1]"><img src="{{this.tablero[1].imagenUrl}}"  alt=""></div> 
-                <div [style.zIndex]="zValue3" class="carta cartaJugada3" *ngIf="this.tablero[2]"><img src="{{this.tablero[2].imagenUrl}}"  alt=""></div> 
-                <div [style.zIndex]="zValue4" class="carta cartaJugada4" *ngIf="this.tablero[3]"><img src="{{this.tablero[3].imagenUrl}}"  alt=""></div> 
-            </div>
+            <div [style.zIndex]="zValue2" class="carta cartaJugada2" *ngIf="this.tablero[1]"><img src="{{this.tablero[1].imagenUrl}}"  alt=""></div> 
+            <div [style.zIndex]="zValue3" class="carta cartaJugada3" *ngIf="this.tablero[2]"><img src="{{this.tablero[2].imagenUrl}}"  alt=""></div> 
+            <div [style.zIndex]="zValue4" class="carta cartaJugada4" *ngIf="this.tablero[3]"><img src="{{this.tablero[3].imagenUrl}}"  alt=""></div> 
         </div>
+    </div>
     <div class="puntuacion"> 
-        <h3 class="log">{{this.logg}} Hola</h3>
+        <div class="log">
+            <h2>Puntuación</h2>
+            <h3>{{this.logg[0]}}</h3>
+            <h3>{{this.logg[1]}}</h3>
+            <h3>{{this.logg[2]}}</h3>
+        </div>
+        
+    </div>
+    <div class="infoPartidaContainer"> 
+        <h2>Jugadas</h2>
+        <div class="logPartida">
+            <h3 *ngFor="let item of logPartida">
+                {{item}}</h3>
+        </div>
+        
     </div>
     <div class="mesaPinta">
         <div  *ngIf="this.manosRepartidas && this.cartasEnLaBaraja >= 1" class="carta cartaPinta"><img src="{{ this.pinta.imagenUrl }}"></div>
@@ -55,4 +66,30 @@
         <div class="cartasEnBaraja"  *ngIf="this.manosRepartidas && this.cartasEnLaBaraja >= 1">Cartas restantes: {{this.cartasEnLaBaraja}}</div>
     </div>
     
-</main>    
+</main> 
+
+<!-- Antes de la partida-->
+<main *ngIf="!this.manosRepartidas">
+    <mat-card class="imagenContainer">
+        <h2>La Brisca</h2>
+        <div class="botones">
+            <button class="btnEmpezar" *ngIf="!this.manosRepartidas" (click)="empezarPartida()">Empezar partida</button>
+            <button class="btnEmpezar" *ngIf="!this.manosRepartidas" (click)="verPuntuaciones()">Ver puntuaciones</button>
+            <button class="btnEmpezar" *ngIf="!this.manosRepartidas" (click)="verRanking()">Ver ranking</button>
+        </div>
+        <img class="imagenBaraja" src="../../assets/baraja_inicio.png" alt="">
+    </mat-card>
+    
+    
+    <!--mat-card>
+        <mat-card-title-group class="cajaTitulo">
+            <mat-card-title>{{this.nombre}}</mat-card-title>
+            <img mat-card-sm-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" >
+        </mat-card-title-group>
+        <mat-card-content class="cajaBody">
+            <button class="btnEmpezar" *ngIf="!this.manosRepartidas" (click)="empezarPartida()">Empezar partida</button>
+            <button class="btnEmpezar" *ngIf="!this.manosRepartidas" (click)="verPuntuaciones()">Ver puntuaciones</button>
+            <button class="btnEmpezar" *ngIf="!this.manosRepartidas" (click)="verRanking()">Ver ranking</button>
+        </mat-card-content>
+    </mat-card-->
+</main>

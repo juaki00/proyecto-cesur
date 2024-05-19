@@ -1,0 +1,26 @@
+<div class="container">
+    <header>
+        <h1>Partidas jugadas por {{nombre | nombrePropio}}</h1>
+    </header>
+    <div class="wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Posición</th>
+                    <th>Nombre</th>
+                    <th>Puntuación</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of ranking.partidas | slice:0:20; let i = index">
+        <td class="rank">{{i+1}}</td>
+        <td class="team">{{item.jugador.nombre | nombrePropio}}</td>
+        <td class="points">{{item.puntuacion}}</td>
+        <td class="up-down">{{item.fecha | fecha}}</td>
+      </tr>
+            </tbody>
+        </table>
+        <button (click)="volver()" class="volver">Volver</button>
+    </div>
+</div>

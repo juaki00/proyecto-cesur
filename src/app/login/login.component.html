@@ -1,0 +1,49 @@
+<!--login-->
+<div class="login" *ngIf="verLogin">
+  <form class="custom-form">
+    <h1>Login</h1>
+    <input #name
+      type="text"
+      name="nombre"
+      placeholder="Nombre"
+      required="required" 
+    />
+    <input #pass
+      type="password"
+      name="password"
+      placeholder="Password"
+      required="required" 
+    />
+    <button class="button" (click)="this.iniciarSesion(name.value, pass.value)">Log in</button>
+    <button (click)="this.switchLogin()" class="registrarme">Registrarme</button>
+  </form>
+  <h3 class="errorLabel" [(ngModel)]="errorLabel">{{errorLabel}}</h3>
+</div>
+
+<!--sign up-->
+<div class="register" *ngIf="verRegister">
+  <form class="custom-form">
+    <h1>Register</h1>
+    <input
+      type="text" #name
+      name="Nombre"
+      placeholder="Nombre"
+      required="required"
+    />
+    <input
+      type="email" #email
+      name="email"
+      placeholder="Email"
+      required="required"
+    />
+    <input
+      type="password" #pass
+      name="password"
+      placeholder="Contraseña"
+      required="required"
+    />
+    <button class="button" (click)="crearUsuario(name.value, pass.value, email.value,name, email, pass)">Registreme</button>
+    <button (click)="this.switchLogin()" class="registrarme">Ya tengo cuenta</button>
+  </form>
+  <h3 class="errorLabel" [(ngModel)]="errorLabel">{{errorLabel}}</h3>
+</div>

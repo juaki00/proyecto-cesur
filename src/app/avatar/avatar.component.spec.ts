@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ManoBriscaComponent } from './mano-brisca.component';
+import { AvatarComponent } from './avatar.component';
 
-describe('ManoBriscaComponent', () => {
-  let component: ManoBriscaComponent;
-  let fixture: ComponentFixture<ManoBriscaComponent>;
+describe('AvatarComponent', () => {
+  let component: AvatarComponent;
+  let fixture: ComponentFixture<AvatarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ManoBriscaComponent ]
+      declarations: [ AvatarComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ManoBriscaComponent);
+    fixture = TestBed.createComponent(AvatarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

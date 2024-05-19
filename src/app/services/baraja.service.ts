@@ -70,4 +70,34 @@ export class BarajaService {
     return result;
   }
   
+  private nombreValor(value: number): string {
+    switch (value) {
+      case 8:
+        return 'Sota';
+      case 9:
+        return 'Caballo';
+      case 10:
+        return 'Rey';
+      default:
+        return value.toString();
+    }
+}
+private nombrePalo(value: number): string {
+    switch (value) {
+        case 4:
+        return 'Oros';
+        case 1:
+        return 'Bastos';
+        case 2:
+        return 'Copas';
+        case 3:
+        return 'Espadas';
+        default:
+        return value.toString();
+    }
+}
+
+nombreCarta(carta:Carta): string{
+    return this.nombreValor(carta.valor) + ' de ' + this.nombrePalo(carta.palo);
+}
 }

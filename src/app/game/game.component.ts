@@ -1,17 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { Baraja, Carta, ManoBrisca, Palo } from '../models/Cartas';
 import { BarajaService } from '../services/baraja.service';
 import { BriscaService } from '../services/brisca.service';
+import { SessionService } from '../services/session.service';
+import { Router } from '@angular/router';
+import { LoginService } from '../services/login.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NombrePropioPipe } from '../pipes/nombre-propio.pipe';
 
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.scss']
+  styleUrls: ['./game.component.scss'],
+  providers: [NombrePropioPipe]
 })
 export class GameComponent implements OnInit {
+  VELOCIDAD_PARTIDA = 12;
 
-  VELOCIDAD_PARTIDA = 22;
-
+  nombre = '';
   pointerEventsValue = 'none';
   manosRepartidas = false;
   baraja!:Baraja;
@@ -35,10 +41,11 @@ export class GameComponent implements OnInit {
   jugadorGanador = 0;
   pinta:Carta;
 
-  logg = "puntuacion";
+  logg: string[] = []; //= "puntuacion";
+  logPartida: string[] = [];
   esRondaFinal = this.barajaService.estaVacio();
 
-  constructor(private barajaService:BarajaService, private bricaService:BriscaService) {
+  constructor(private nombrePipe: NombrePropioPipe, private renderer: Renderer2, private el: ElementRef,private router: Router, private barajaService:BarajaService, private bricaService:BriscaService, private sessionService: SessionService, private loginService: LoginService) {
     this.manos = new Array(3);
     this.tablero = new Array(4);
     this.pinta = this.barajaService.cogerPrimeraCarta();
@@ -46,9 +53,17 @@ export class GameComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.renderer.setStyle(document.body, 'background-color', 'rgb(53, 104, 45)');
+    const user = localStorage.getItem("usuario");
+    if(!user){
+      this.router.navigate(['../login']);
+    }
+    else{
+      this.nombre = this.nombrePipe.transform(user);
+    }
   }
 
-  iniciarVariables(){
+  private iniciarVariables(){
     this.pointerEventsValue = 'none';
     this.manosRepartidas = false;
 
@@ -66,6 +81,21 @@ export class GameComponent implements OnInit {
     this.finalRonda=false;
     this.valorRonda = 0;
     this.jugadorGanador = 0;
+  }
+
+  verPuntuaciones(){
+    this.router.navigate(['../misPartidas']);
+  }
+
+  verRanking(){
+    this.router.navigate(['../ranking']);
+  }
+
+  salir(){
+
+    console.log('Recargando página...');
+    window.location.reload();
+    //this.router.navigate(['../home']);
   }
 
   async empezarPartida(){
@@ -139,6 +169,10 @@ export class GameComponent implements OnInit {
 
     let cartaJugada:Carta;
     if(this.cartasJugadas<4){
+      this.logPartida.push('Jugador ' + this.turno + ': ' + this.barajaService.nombreCarta(this.manos[this.turno-1].cartas[cartaDecidida]));
+      if (this.logPartida.length > 4) {
+        this.logPartida.shift();
+      }
       cartaJugada = {...this.manos[this.turno-1].cartas[cartaDecidida]};
       this.manos[this.turno-1].cartas[cartaDecidida]=this.barajaService.cogerPrimeraCarta();
       this.tablero[this.turno-1] = cartaJugada;
@@ -158,6 +192,7 @@ export class GameComponent implements OnInit {
       if(this.cartaGanadora == cartaJugada){
         this.jugadorGanador = this.turno;
       }
+
     }     
   }
 
@@ -183,6 +218,11 @@ export class GameComponent implements OnInit {
       this.manos[2].cartas[2]=this.barajaService.cogerPrimeraCarta();
       this.tablero[2]=cartaJugada;
     }
+    this.logPartida.push(this.nombre + ': ' + this.barajaService.nombreCarta(cartaJugada));
+    if (this.logPartida.length > 4) {
+      this.logPartida.shift();
+    }
+
     if(!this.cartaGanadora || this.cartaGanadora.valor == 0){
       this.cartaGanadora = cartaJugada;
     }
@@ -228,10 +268,10 @@ export class GameComponent implements OnInit {
         this.equipo2 = this.equipo2 + this.valorRonda;
       }
       
-      this.logg = 
-      this.jugadorGanador + " gana la ronda, " +
-      "Equipo 1 y 3: " + this.equipo1 + 
-      ", Equipo 2 y 4: " + this.equipo2;
+      this.logg[0] = 
+      'El jugador ' + this.jugadorGanador + ' gana la ronda';
+      this.logg[1] = 'Equipo de ' + this.nombre + ': ' + this.equipo1;
+      this.logg[2] = 'Equipo contrario: ' + this.equipo2;
       this.valorRonda = 0;
       this.tablero = new Array();
       this.cartasJugadas = 0;
@@ -321,7 +361,7 @@ export class GameComponent implements OnInit {
     let cartasOrdenadas: Carta[] = new Array();
     //comprobar que alguna de las tres cartas existe
      this.manos[numJugador].cartas.forEach(carta=>{
-      if(carta.valor>0){
+      if(carta && carta.valor>0){
         cartasOrdenadas.push(carta);
       }
      });
@@ -339,14 +379,29 @@ export class GameComponent implements OnInit {
   }
 
   finDelJuego() {
+    this.loginService.agregarPartida$(this.nombre, this.equipo1).subscribe(
+      () => {
+        console.log('Partida agregada exitosamente');
+      },
+      (error: HttpErrorResponse) => {
+        console.error('Error al agregar partida:', error);
+        
+      }
+    ); 
     if(this.equipo1>this.equipo2){
-      this.logg="Has ganado con una puntuacion de " + this.equipo1;
+      this.logg[0]="Has ganado con una puntuacion de " + this.equipo1;
+      this.logg[1]="";
+      this.logg[2]="";
     }
     else if(this.equipo1<this.equipo2){
-      this.logg="Has perdido con una puntuacion de " + this.equipo1;
+      this.logg[0]="Has perdido con una puntuacion de " + this.equipo1;
+      this.logg[1]="";
+      this.logg[2]="";
     }
     else{
-      this.logg="Empate a " + this.equipo1 + " puntos";
+      this.logg[0]="Empate a " + this.equipo1 + " puntos";
+      this.logg[1]="";
+      this.logg[2]="";
     }
     
   }
