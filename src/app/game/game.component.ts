@@ -15,7 +15,7 @@ import { NombrePropioPipe } from '../pipes/nombre-propio.pipe';
   providers: [NombrePropioPipe]
 })
 export class GameComponent implements OnInit {
-  VELOCIDAD_PARTIDA = 12;
+  VELOCIDAD_PARTIDA = 40;
 
   nombre = '';
   pointerEventsValue = 'none';
@@ -23,15 +23,15 @@ export class GameComponent implements OnInit {
   baraja!:Baraja;
   manos: ManoBrisca[];
   tablero: Carta[];
-
+  pinta:Carta;
   cartasJugadas = 0;
   cartasEnLaBaraja = 40;
   turno = 1;
+
   zValue1 = 0;
   zValue2 = 0;
   zValue3 = 0;
   zValue4 = 0;
-
   equipo1 = 0;
   equipo2 = 0;
 
@@ -39,7 +39,6 @@ export class GameComponent implements OnInit {
   valorRonda = 0;
   cartaGanadora!: Carta;
   jugadorGanador = 0;
-  pinta:Carta;
 
   logg: string[] = []; //= "puntuacion";
   logPartida: string[] = [];
@@ -61,6 +60,8 @@ export class GameComponent implements OnInit {
     else{
       this.nombre = this.nombrePipe.transform(user);
     }
+    this.logg[0] = 'Equipo de ' + this.nombre + ': 0';
+    this.logg[1] = 'Equipo contrario: 0';
   }
 
   private iniciarVariables(){
@@ -92,10 +93,7 @@ export class GameComponent implements OnInit {
   }
 
   salir(){
-
-    console.log('Recargando página...');
     window.location.reload();
-    //this.router.navigate(['../home']);
   }
 
   async empezarPartida(){
@@ -267,11 +265,8 @@ export class GameComponent implements OnInit {
       else{
         this.equipo2 = this.equipo2 + this.valorRonda;
       }
-      
-      this.logg[0] = 
-      'El jugador ' + this.jugadorGanador + ' gana la ronda';
-      this.logg[1] = 'Equipo de ' + this.nombre + ': ' + this.equipo1;
-      this.logg[2] = 'Equipo contrario: ' + this.equipo2;
+      this.logg[0] = 'Equipo de ' + this.nombre + ': ' + this.equipo1;
+      this.logg[1] = 'Equipo contrario: ' + this.equipo2;
       this.valorRonda = 0;
       this.tablero = new Array();
       this.cartasJugadas = 0;
@@ -294,7 +289,6 @@ export class GameComponent implements OnInit {
 
   //RONDA FINAL
   async rondaFinal() {
-    console.log("ronda finl, cartasjugadas:" + this.cartasJugadas + ", turno: " + this.turno);
     //elegir si juega IA o el jugador
     if(this.turno==3){
       if(this.cartasJugadas>=4){
@@ -322,15 +316,26 @@ export class GameComponent implements OnInit {
     } 
   }
 
-  juegaIAFinal() {
+  async decidirJugada(cartas: Carta[], tablero: Carta[], cartaGanadora: Carta, palo: number, vamosGanando: boolean): Promise<number> {
+    return this.bricaService.decidirJugada(cartas,tablero, cartaGanadora, palo, vamosGanando);
+  }
+
+  async juegaIAFinal() {
+    let cartaDecidida = 0;
     let vamosGanando: boolean  = ((this.jugadorGanador == 1 || this.jugadorGanador == 3) 
                                && (this.turno == 1 || this.turno == 3))
                               || ((this.jugadorGanador == 2 || this.jugadorGanador == 4)
                                && (this.turno == 2 || this.turno == 4));
-    const cartaDecidida = this.bricaService.decidirJugada(this.manos[this.turno-1].cartas,this.tablero, this.cartaGanadora, this.pinta.palo, vamosGanando);
-
+    (async () => {
+      let cartaDecidida: number = await this.decidirJugada(this.manos[this.turno-1].cartas,this.tablero, this.cartaGanadora, this.pinta.palo, vamosGanando);
+      console.log("pasa")
+    
+    if(this.manos[this.turno-1].cartas[cartaDecidida].valor==0){
+      cartaDecidida = 0;
+    }
+    console.log("carta decidida: " + cartaDecidida + " por jugador " + this.turno);
     const numeroCartasEnMano = this.barajaService.cartasEnMano(this.manos[this.turno-1].cartas);
-    this.quitarCartaVacia(this.turno-1);
+    //this.quitarCartaVacia(this.turno-1);
     let cartaJugada:Carta;
     if(this.cartasJugadas<4){
       cartaJugada = {...this.manos[this.turno-1].cartas[cartaDecidida]};
@@ -353,8 +358,8 @@ export class GameComponent implements OnInit {
         this.jugadorGanador = this.turno;
       }
 
-
-    }     
+    } 
+  })();    
   }
 
   quitarCartaVacia(numJugador:number){
@@ -365,17 +370,17 @@ export class GameComponent implements OnInit {
         cartasOrdenadas.push(carta);
       }
      });
+    let i = 0;
+     for(let carta of cartasOrdenadas){
+      this.manos[numJugador].cartas[i] = carta;
+      i++;
+     }
 
      for(let i = 0; i < 3; i++ ){
-      if(cartasOrdenadas[i]){
-        this.manos[numJugador].cartas[i] = cartasOrdenadas[i];
-      }
-      else{
+      if(!cartasOrdenadas[i] || this.manos[numJugador].cartas[i].valor==0){
         this.manos[numJugador].cartas[i] = new Carta(0,0,"");
-      }
-      
+      }    
      }
-     
   }
 
   finDelJuego() {
@@ -412,3 +417,6 @@ export class GameComponent implements OnInit {
   }
 
 }
+
+
+

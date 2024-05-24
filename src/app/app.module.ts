@@ -16,7 +16,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
-import { AvatarComponent } from './avatar/avatar.component';
 import {MatInputModule} from '@angular/material/input';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
@@ -37,7 +36,6 @@ import { NombrePropioPipe } from './pipes/nombre-propio.pipe';
     PaloPipe,
     CartaNombrePipe,
     LoginComponent,
-    AvatarComponent,
     RankingComponent,
     FechaPipe,
     MisPartidasComponent,

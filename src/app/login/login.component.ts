@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from '../services/login.service';
 import { Login } from '../models/Usuario';
@@ -27,10 +27,11 @@ export class LoginComponent implements OnInit {
   IsVisible = false;
   password= '';
 
-  constructor(private router: Router, private sessionService: SessionService, private loginService: LoginService) {}
+  constructor(private renderer: Renderer2, private router: Router, private sessionService: SessionService, private loginService: LoginService) {}
 
   ngOnInit(): void {
     this.error=false;
+    this.renderer.setStyle(document.body, 'background-color', 'rgb(53, 104, 45)');
   }
 
   switchLogin() {

@@ -18,6 +18,26 @@
   text-align: center;
 }
 
+.jugador1 h3{
+  position: absolute;
+  top: 160px;
+}
+
+.jugador2 h3{
+  position: absolute;
+  top: 200px;
+}
+
+.jugador3 h3{
+  position: absolute;
+  top: 660px;
+}
+
+.jugador4 h3{
+  position: absolute;
+  top: 200px;
+}
+
 .jugador1{
   grid-area: jugador1;
 }
@@ -279,25 +299,13 @@ button.btnEmpezar{
   min-width: 110px;
   box-shadow: 0px 0px 2px 1px;
 }
-/*
-@media (min-width: 600px){
   .grid-container {
-    grid-template:
-    "jugador1      jugador1 jugador1"    120px
-    "jugador2      tablero  jugador4"    auto
-    ".      jugador3 puntuacion"    120px /
-    170px        auto     170px ;
-  }
-}
-*/
-/*@media (min-width: 927px){*/
-  
-  .grid-container {
+    background-color: rgb(72, 125, 63);
     grid-template:
     ".    infoJugador .              jugador1    infoPartida  ."     150px
     ".    jugador2    mesaPinta      tablero     jugador4     ."     300px
     ".    .           .              jugador3    puntuacion   ."     150px /
-    auto  200px        200px          300px        200px      auto;
+    auto  200px        200px          300px        250px      auto;
   }
 
 /*}*/

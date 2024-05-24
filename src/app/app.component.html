@@ -1,14 +1,13 @@
-<mat-toolbar>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon>menu</mat-icon>
-    </button>
+<div class="mainContainer"></div>
+  <mat-toolbar>
     <span>Cards vs Machine</span>
     <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+    <button mat-icon-button (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+    <button mat-icon-button class="example-icon">
       <mat-icon>home</mat-icon>
     </button>
+    <h5 class="nombre">{{nombre | nombrePropio}}</h5>
   </mat-toolbar>
-<router-outlet></router-outlet>
+  <router-outlet></router-outlet>

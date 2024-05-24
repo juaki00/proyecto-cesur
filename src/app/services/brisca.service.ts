@@ -63,6 +63,9 @@ export class BriscaService {
       else if(carta.valor == 10){
         valor = 4;
       }
+      else if(carta.valor < 1){
+        valor = -1;
+      }
 
       return valor;
    }
@@ -98,6 +101,9 @@ export class BriscaService {
         }
         else if(carta.valor > 7){
           tipo = TipoCarta.MINIPUNTOS;
+        }
+        else if(carta.valor < 1){
+          tipo = TipoCarta.NULL;
         }
         else{
           tipo = TipoCarta.BASURA;
@@ -163,8 +169,12 @@ export class BriscaService {
     let tipo2 = this.tipoCarta(carta2, pinta);
     let valor1 = this.valorCarta(carta1);
     let valor2 = this.valorCarta(carta2);
+    
     switch(tipo1){
-      case TipoCarta.BASURA:  
+      case TipoCarta.NULL:  
+        cartaElegida = 2;
+        break;
+        case TipoCarta.BASURA:  
         if(tipo2 == TipoCarta.BASURA && carta2.valor < carta1.valor){
           cartaElegida = 2;
         }
@@ -202,6 +212,7 @@ export class BriscaService {
         }
         break;
     }
+    console.log("CartaElegida: " + cartaElegida + " tipo1: " + tipo1 + " tipo2: " + tipo2);
     return cartaElegida;
   }
 
@@ -271,6 +282,7 @@ export class BriscaService {
   }
 
   private superarOVida(cartas: Carta[], cartaGanadora: Carta, pinta: Palo): number{
+    console.log("superarOvida, Cartas:  " + cartas[0].valor + " - " + cartas[1].valor + " - " + cartas[2].valor);
     let eleccion = 0;
     let cartaElegida: Carta | undefined;
     let contador = 1;
@@ -288,7 +300,7 @@ export class BriscaService {
       contador = 1;
       cartas.forEach( carta => {
         if(this.laSupera(carta, cartaGanadora)){
-          if(cartaElegida === undefined || this.valorCarta(carta) < this.valorCarta(cartaElegida)){
+          if(cartaElegida == undefined || this.valorCarta(carta) < this.valorCarta(cartaElegida)){
             cartaElegida = carta;
             eleccion = contador;
           }
@@ -340,6 +352,7 @@ export class BriscaService {
   }
 
   private superarOBasura(cartas: Carta[],cartaGanadora: Carta, pinta: Palo): number {
+    console.log("superarOBasura, numero de cartas:  " + cartas.length)
     let elegida = this.algunaSupera(cartas, cartaGanadora);
     if(elegida == 0){
       elegida = this.tirarBasura(cartas, pinta);
@@ -356,8 +369,10 @@ export class BriscaService {
   }
 
   private laSupera(carta1: Carta, carta2: Carta): boolean{
-    return (carta1.palo == carta2.palo && (this.valorCarta(carta1) > this.valorCarta(carta2)) ||
-            (this.valorCarta(carta1) == this.valorCarta(carta2) && carta1.valor > carta2.valor));
+    let result = (carta1.palo == carta2.palo && (this.valorCarta(carta1) > this.valorCarta(carta2)) ||
+    (carta1.palo == carta2.palo && this.valorCarta(carta1) == this.valorCarta(carta2) && carta1.valor > carta2.valor));
+    console.log(result + ": " + carta1.valor + " de " + carta1.palo + " supera a " +carta2.valor + " de " + carta2.palo);
+    return result;
   }
 
   private tirarVidaMedianaOBasura(cartas: Carta[], pinta: Palo): number {
@@ -448,9 +463,19 @@ export class BriscaService {
       case 4: cartaElegida = this.decidirJugada4(cartas, mesa, cartaGanadora, pinta, vamosGanando);
         break;  
     }
-
+    for(let i=0; i<2;i++){
+      if(this.tipoCarta(cartas[cartaElegida-1], pinta) == TipoCarta.NULL){
+        if(cartaElegida==3){
+          cartaElegida = 1;
+        }else{
+          cartaElegida++;
+        }
+      }
+    }
     return cartaElegida -1;
+  
   }
+    
   
   private decidirJugada1(cartas: Carta[], mesa: Carta[], pinta: Palo): number {
     return this.tirarBasura(cartas, pinta);
