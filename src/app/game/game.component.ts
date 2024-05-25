@@ -15,7 +15,7 @@ import { NombrePropioPipe } from '../pipes/nombre-propio.pipe';
   providers: [NombrePropioPipe]
 })
 export class GameComponent implements OnInit {
-  VELOCIDAD_PARTIDA = 40;
+  VELOCIDAD_PARTIDA = 4;
 
   nombre = '';
   pointerEventsValue = 'none';
