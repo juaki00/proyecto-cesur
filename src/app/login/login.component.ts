@@ -46,7 +46,8 @@ export class LoginComponent implements OnInit {
     this.loginService.login$(nombre,pswd).subscribe(response => {
       if(response.existe){
         localStorage.setItem("usuario", nombre);
-        this.router.navigate(['../game']);
+        this.sessionService.setNombre(nombre);
+        this.router.navigate(['../']);
       }
       else{
         this.error = true;

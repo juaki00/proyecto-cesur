@@ -1,11 +1,11 @@
 <div class="mainContainer"></div>
   <mat-toolbar>
     <span>Cards vs Machine</span>
-    <span class="example-spacer"></span>
+    <span class="spacer"></span>
     <button mat-icon-button (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>
-    <button mat-icon-button class="example-icon">
+    <button (click)="home()" mat-icon-button>
       <mat-icon>home</mat-icon>
     </button>
     <h5 class="nombre">{{nombre | nombrePropio}}</h5>

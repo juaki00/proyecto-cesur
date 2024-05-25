@@ -1,34 +1,27 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionService {
-/*
-  private _sesionActiva: boolean = false;
-  private _usuario: string = '';
+  private nombreSubject: BehaviorSubject<string>;
 
-  constructor() { }
-
-  // Método para iniciar sesión
-  iniciarSesion(usuario: string) {
-    this._sesionActiva = true;
-    this._usuario = usuario;
+  constructor() {
+    const nombre = localStorage.getItem('usuario') || '';
+    this.nombreSubject = new BehaviorSubject<string>(nombre);
   }
 
-  // Método para cerrar sesión
-  cerrarSesion() {
-    this._sesionActiva = false;
-    this._usuario = '';
+  get nombre$() {
+    return this.nombreSubject.asObservable();
   }
 
-  // Método para comprobar si la sesión está activa
-  sesionActiva(): boolean {
-    return this._sesionActiva;
+  setNombre(nombre: string) {
+    localStorage.setItem('usuario', nombre);
+    this.nombreSubject.next(nombre);
   }
 
-  // Método para obtener el usuario en sesión
-  obtenerUsuario(): string {
-    return this._usuario;
-  }*/
+  getNombre(): string {
+    return this.nombreSubject.value;
+  }
 }

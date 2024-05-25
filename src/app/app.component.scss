@@ -8,24 +8,24 @@
     background-image: url('../assets/fondoCartas.jpg');
     background-size: cover;
     background-position: center;
-    filter: opacity(0.1); /* Solo la imagen de fondo es transparente */
-    z-index: -1000; /* Asegúrate de que el contenedor esté detrás del contenido */
+    filter: opacity(0.1);
+    z-index: -1000;
 }
 
 mat-toolbar{
-    background-color: green;
+    background-color: rgb(108, 151, 108);
     height: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.example-spacer {
+.spacer {
     flex: 1 1 auto;
   }
   
   .nombre {
     margin-left: auto;
-    margin-right: 16px; /* Añade un margen derecho si es necesario para espaciado */
+    margin-right: 16px;
   }
   
