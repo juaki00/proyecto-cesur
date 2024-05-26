@@ -17,7 +17,7 @@
     <button class="button" (click)="this.iniciarSesion(name.value, pass.value)">Log in</button>
     <button (click)="this.switchLogin()" class="registrarme">Registrarme</button>
   </form>
-  <h3 class="errorLabel" [(ngModel)]="errorLabel">{{errorLabel}}</h3>
+  <h3 *ngIf="errorLabel!=''" class="errorLabel" [(ngModel)]="errorLabel">{{errorLabel}}</h3>
 </div>
 
 <!--sign up-->
@@ -45,5 +45,5 @@
     <button class="button" (click)="crearUsuario(name.value, pass.value, email.value,name, email, pass)">Registreme</button>
     <button (click)="this.switchLogin()" class="registrarme">Ya tengo cuenta</button>
   </form>
-  <h3 class="errorLabel" [(ngModel)]="errorLabel">{{errorLabel}}</h3>
+  <h3 *ngIf="errorLabel!=''" class="errorLabel" [(ngModel)]="errorLabel">{{errorLabel}}</h3>
 </div>

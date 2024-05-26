@@ -20,7 +20,7 @@ h1 {
   background-color: #ecf0f3;
   box-shadow: 1px 13px 20px #000000, 1px 2px 2px #000000;
   color: black;
-  margin-top: 10rem;
+  margin-top: 5rem;
 }
 .custom-form input {
   display: block;
@@ -58,5 +58,12 @@ h1 {
 }
 
 .errorLabel{
-  margin: 20px;
+  margin: 30px;
+  padding: 15px;
+  width: 800px;
+  border-radius: 2.5rem;
+  background-color: #ecf0f3;
+  box-shadow: 1px 13px 20px #000000, 1px 2px 2px #000000;
+  text-align: center;
+  font-size: 25px;
 }
